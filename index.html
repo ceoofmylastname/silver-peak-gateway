@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Silver Peak Health Plans — The Unfair Advantage for Agents</title>
+    <meta name="description"
+        content="Silver Peak Health Plans gives licensed agents and brokers access to exclusive major medical PPO plans their competition can't offer. Get appointed today." />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet" />
+
+    <style>
+        /* ================================================================
+       CUSTOM PROPERTIES — LIGHT MODE
+    ================================================================ */
+        :root {
+            /* Whites & Lights */
+            --color-bg: #ffffff;
+            --color-bg-soft: #f7f8fb;
+            --color-bg-card: #ffffff;
+            --color-bg-card-alt: #f0f2f7;
+
+            /* Darks — for text */
+            --color-ink: #0a0e1a;
+            --color-ink-secondary: #2c3145;
+            --color-ink-muted: #6b7280;
+
+            /* Brand Blues */
+            --color-blue: #1a4f9c;
+            --color-blue-deep: #0e2f66;
+            --color-blue-light: #4a8fd4;
+            --color-blue-glow: rgba(26, 79, 156, 0.12);
+
+            /* Brand Golds */
+            --color-gold: #c4922c;
+            --color-gold-deep: #a07520;
+            --color-gold-light: #e8b84a;
+            --color-gold-glow: rgba(196, 146, 44, 0.15);
+
+            /* Gradients */
+            --gradient-headline: linear-gradient(90deg, #060d1f 0%, #0e2f66 15%, #1a4f9c 30%, #9e7520 45%, #c4922c 55%, #1a4f9c 70%, #0e2f66 85%, #060d1f 100%);
+            --gradient-hero-bg: linear-gradient(135deg, #eef2f9 0%, #ffffff 40%, #fdf6e8 70%, #f0f4ff 100%);
+
+            /* Shadows */
+            --shadow-sm: 0 2px 8px rgba(10, 14, 26, 0.04), 0 1px 2px rgba(10, 14, 26, 0.03);
+            --shadow-md: 0 8px 30px rgba(10, 14, 26, 0.06), 0 2px 8px rgba(10, 14, 26, 0.04);
+            --shadow-lg: 0 20px 60px rgba(10, 14, 26, 0.08), 0 8px 24px rgba(10, 14, 26, 0.05);
+            --shadow-xl: 0 30px 80px rgba(10, 14, 26, 0.1), 0 12px 36px rgba(10, 14, 26, 0.06);
+            --shadow-3d: 0 20px 50px rgba(10, 14, 26, 0.12), 0 8px 20px rgba(10, 14, 26, 0.08), 0 2px 6px rgba(10, 14, 26, 0.05);
+            --shadow-3d-hover: 0 30px 70px rgba(10, 14, 26, 0.15), 0 12px 30px rgba(10, 14, 26, 0.1), 0 4px 10px rgba(10, 14, 26, 0.06);
+            --shadow-blue: 0 12px 40px rgba(26, 79, 156, 0.15), 0 4px 12px rgba(26, 79, 156, 0.1);
+            --shadow-gold: 0 12px 40px rgba(196, 146, 44, 0.15), 0 4px 12px rgba(196, 146, 44, 0.1);
+
+            /* Spacing */
+            --container-max: 1100px;
+            --section-pad: clamp(80px, 12vw, 140px);
+            --card-radius: 24px;
+            --modal-radius: 28px;
+
+            /* Fonts */
+            --font-display: 'Bebas Neue', sans-serif;
+            --font-serif: 'Playfair Display', serif;
+            --font-body: 'DM Sans', sans-serif;
+        }
+
+        /* ================================================================
+       RESET & BASE
+    ================================================================ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--color-bg);
+            color: var(--color-ink-secondary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-family: inherit;
+        }
+
+        .container {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: 0 clamp(20px, 5vw, 40px);
+        }
+
+        /* Scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ================================================================
+       STICKY NAV
+    ================================================================ */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: background 0.4s, box-shadow 0.4s, padding 0.4s;
+        }
+
+        .nav.scrolled {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            box-shadow: 0 1px 0 rgba(10, 14, 26, 0.06), 0 4px 20px rgba(10, 14, 26, 0.04);
+            padding: 14px 0;
+        }
+
+        .nav .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo img {
+            height: 44px;
+            width: auto;
+            /* Make logo dark for white bg — if it's light, apply filter */
+        }
+
+        .nav.scrolled .nav-logo img {
+            height: 38px;
+        }
+
+        /* Primary CTA Button — 3D elevated */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 15px 36px;
+            background: linear-gradient(135deg, var(--color-blue-deep), var(--color-blue));
+            color: #ffffff;
+            font-family: var(--font-display);
+            font-size: 1.05rem;
+            letter-spacing: 2.5px;
+            border-radius: 60px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s;
+            box-shadow: var(--shadow-blue);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 18px 50px rgba(26, 79, 156, 0.25), 0 8px 20px rgba(26, 79, 156, 0.15);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px) scale(1);
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -100%;
+            width: 60%;
+            height: 200%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: skewX(-20deg);
+            transition: left 0.6s;
+        }
+
+        .btn-primary:hover::after {
+            left: 130%;
+        }
+
+        /* Gold variant */
+        .btn-gold {
+            background: linear-gradient(135deg, var(--color-gold-deep), var(--color-gold), var(--color-gold-light));
+            color: #ffffff;
+            box-shadow: var(--shadow-gold);
+            animation: btn-breathe 4s ease-in-out infinite;
+        }
+
+        .btn-gold:hover {
+            box-shadow: 0 18px 50px rgba(196, 146, 44, 0.3), 0 8px 20px rgba(196, 146, 44, 0.18);
+        }
+
+        @keyframes btn-breathe {
+
+            0%,
+            100% {
+                box-shadow: var(--shadow-gold);
+            }
+
+            50% {
+                box-shadow: 0 16px 50px rgba(196, 146, 44, 0.22), 0 6px 16px rgba(196, 146, 44, 0.12);
+            }
+        }
+
+        /* ================================================================
+       HERO
+    ================================================================ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 120px 0 80px;
+            background: var(--gradient-hero-bg);
+        }
+
+        /* Floating 3D shapes — decorative elements */
+        .hero-shape {
+            position: absolute;
+            border-radius: var(--card-radius);
+            pointer-events: none;
+            will-change: transform;
+        }
+
+        .hero-shape-1 {
+            width: 320px;
+            height: 320px;
+            top: 8%;
+            right: -4%;
+            background: linear-gradient(135deg, rgba(26, 79, 156, 0.06), rgba(74, 143, 212, 0.03));
+            border: 1px solid rgba(26, 79, 156, 0.06);
+            box-shadow: var(--shadow-lg);
+            transform: rotate(12deg);
+            animation: float-shape-1 16s ease-in-out infinite;
+        }
+
+        .hero-shape-2 {
+            width: 200px;
+            height: 200px;
+            bottom: 15%;
+            left: -3%;
+            background: linear-gradient(135deg, rgba(196, 146, 44, 0.06), rgba(232, 184, 74, 0.03));
+            border: 1px solid rgba(196, 146, 44, 0.06);
+            box-shadow: var(--shadow-md);
+            border-radius: 50%;
+            animation: float-shape-2 20s ease-in-out infinite;
+        }
+
+        .hero-shape-3 {
+            width: 140px;
+            height: 140px;
+            top: 25%;
+            left: 8%;
+            background: linear-gradient(135deg, rgba(26, 79, 156, 0.04), transparent);
+            border: 1px solid rgba(26, 79, 156, 0.04);
+            box-shadow: var(--shadow-sm);
+            transform: rotate(-8deg);
+            animation: float-shape-3 14s ease-in-out infinite;
+        }
+
+        .hero-shape-4 {
+            width: 80px;
+            height: 80px;
+            bottom: 30%;
+            right: 12%;
+            background: linear-gradient(135deg, rgba(196, 146, 44, 0.08), transparent);
+            border-radius: 50%;
+            box-shadow: var(--shadow-sm);
+            animation: float-shape-2 18s ease-in-out infinite reverse;
+        }
+
+        @keyframes float-shape-1 {
+
+            0%,
+            100% {
+                transform: rotate(12deg) translate(0, 0);
+            }
+
+            33% {
+                transform: rotate(15deg) translate(-20px, 20px);
+            }
+
+            66% {
+                transform: rotate(10deg) translate(15px, -15px);
+            }
+        }
+
+        @keyframes float-shape-2 {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(25px, -30px) scale(1.05);
+            }
+        }
+
+        @keyframes float-shape-3 {
+
+            0%,
+            100% {
+                transform: rotate(-8deg) translate(0, 0);
+            }
+
+            50% {
+                transform: rotate(-5deg) translate(10px, 20px);
+            }
+        }
+
+        /* Subtle grid pattern */
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(10, 14, 26, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(10, 14, 26, 0.02) 1px, transparent 1px);
+            background-size: 80px 80px;
+            mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 20%, transparent 75%);
+            -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 20%, transparent 75%);
+        }
+
+        /* SVG Mountain — light version */
+        .hero-mountain {
+            position: absolute;
+            bottom: -5%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120%;
+            max-width: 1400px;
+            opacity: 0.06;
+            animation: float-mountain 12s ease-in-out infinite;
+        }
+
+        @keyframes float-mountain {
+
+            0%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+
+            50% {
+                transform: translateX(-50%) translateY(-12px);
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 900px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 22px;
+            border: 1px solid rgba(26, 79, 156, 0.15);
+            border-radius: 60px;
+            font-size: 0.72rem;
+            letter-spacing: 3.5px;
+            text-transform: uppercase;
+            color: var(--color-blue);
+            margin-bottom: 36px;
+            background: rgba(26, 79, 156, 0.04);
+            box-shadow: var(--shadow-sm);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: hero-fade-in 0.8s 0.2s forwards;
+        }
+
+        /* ANIMATED GRADIENT HEADLINE */
+        .hero-headline {
+            font-family: var(--font-display);
+            font-size: clamp(3.5rem, 11vw, 8rem);
+            line-height: 0.92;
+            letter-spacing: 3px;
+            margin-bottom: 32px;
+            color: var(--color-ink);
+            opacity: 0;
+            transform: translateY(50px);
+            animation: hero-headline-in 1.2s 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            position: relative;
+        }
+
+        .hero-headline .line {
+            display: block;
+        }
+
+        /* Animated gradient sweeping overlay */
+        .hero-headline-gradient {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent 0%, var(--color-gold) 40%, var(--color-gold-light) 60%, transparent 100%);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-sweep 4s 1.5s ease-in-out infinite;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        @keyframes hero-headline-in {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes gradient-sweep {
+            0% {
+                opacity: 0;
+                background-position: -100% 0%;
+            }
+
+            15% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 1;
+                background-position: 200% 0%;
+            }
+
+            65% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 0;
+                background-position: 200% 0%;
+            }
+        }
+
+        @keyframes hero-slide-up {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes hero-fade-in {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-sub {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: clamp(1.05rem, 2.5vw, 1.4rem);
+            color: var(--color-ink-muted);
+            max-width: 560px;
+            margin: 0 auto 48px;
+            line-height: 1.7;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: hero-fade-in 0.8s 0.9s forwards;
+        }
+
+        .hero-cta {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: hero-fade-in 0.8s 1.1s forwards;
+        }
+
+        /* ================================================================
+       STATS BAND
+    ================================================================ */
+        .stats {
+            padding: 0 0 var(--section-pad);
+            margin-top: -50px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .stats-card {
+            background: var(--color-bg-card);
+            border: 1px solid rgba(10, 14, 26, 0.05);
+            border-radius: var(--card-radius);
+            padding: clamp(36px, 5vw, 60px) clamp(24px, 4vw, 48px);
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            box-shadow: var(--shadow-3d);
+        }
+
+        .stat-item {
+            text-align: center;
+            position: relative;
+        }
+
+        .stat-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: -16px;
+            top: 10%;
+            height: 80%;
+            width: 1px;
+            background: linear-gradient(180deg, transparent, rgba(10, 14, 26, 0.08), transparent);
+        }
+
+        .stat-number {
+            font-family: var(--font-display);
+            font-size: clamp(2.4rem, 5vw, 3.8rem);
+            letter-spacing: 2px;
+            line-height: 1;
+            margin-bottom: 10px;
+            color: var(--color-blue-deep);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--color-ink-muted);
+            max-width: 220px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* ================================================================
+       OPPORTUNITY SECTION
+    ================================================================ */
+        .opportunity {
+            padding: var(--section-pad) 0;
+            background: var(--color-bg-soft);
+        }
+
+        .opp-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(40px, 6vw, 80px);
+            align-items: start;
+        }
+
+        .section-label {
+            font-size: 0.72rem;
+            letter-spacing: 4.5px;
+            text-transform: uppercase;
+            color: var(--color-blue);
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .section-headline {
+            font-family: var(--font-display);
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            color: var(--color-ink);
+            line-height: 1.02;
+            letter-spacing: 2px;
+            margin-bottom: 24px;
+        }
+
+        .section-body {
+            font-size: 1.05rem;
+            color: var(--color-ink-muted);
+            line-height: 1.85;
+            max-width: 480px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .feature-card {
+            background: var(--color-bg-card);
+            border: 1px solid rgba(10, 14, 26, 0.06);
+            border-radius: 20px;
+            padding: clamp(24px, 3vw, 32px);
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s, border-color 0.45s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-3d-hover);
+            border-color: rgba(26, 79, 156, 0.12);
+        }
+
+        .feature-card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(26, 79, 156, 0.08), rgba(74, 143, 212, 0.04));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 18px;
+            font-size: 1.4rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .feature-card h3 {
+            font-family: var(--font-body);
+            font-size: 1.02rem;
+            font-weight: 700;
+            color: var(--color-ink);
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            font-size: 0.87rem;
+            color: var(--color-ink-muted);
+            line-height: 1.65;
+        }
+
+        .feature-card-full {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #fdfaf3, #ffffff, #f4f7ff);
+            border-color: rgba(196, 146, 44, 0.12);
+        }
+
+        .feature-card-full:hover {
+            border-color: rgba(196, 146, 44, 0.25);
+            box-shadow: var(--shadow-3d-hover), 0 0 40px var(--color-gold-glow);
+        }
+
+        .feature-card-full h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, var(--color-gold-deep), var(--color-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ================================================================
+       PILLARS
+    ================================================================ */
+        .pillars {
+            padding: var(--section-pad) 0;
+        }
+
+        .pillars-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .pillar-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .pillar-card {
+            background: var(--color-bg-card);
+            border: 1px solid rgba(10, 14, 26, 0.05);
+            border-radius: var(--card-radius);
+            padding: clamp(36px, 4vw, 52px) clamp(28px, 3vw, 40px);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s, border-color 0.45s;
+            box-shadow: var(--shadow-md);
+        }
+
+        .pillar-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-3d-hover);
+            border-color: rgba(26, 79, 156, 0.1);
+        }
+
+        .pillar-ghost {
+            position: absolute;
+            top: -12px;
+            right: -8px;
+            font-family: var(--font-display);
+            font-size: clamp(6rem, 12vw, 10rem);
+            line-height: 1;
+            pointer-events: none;
+            transition: color 0.4s;
+            background: linear-gradient(180deg, rgba(26, 79, 156, 0.06), rgba(26, 79, 156, 0.01));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .pillar-card:hover .pillar-ghost {
+            background: linear-gradient(180deg, rgba(26, 79, 156, 0.1), rgba(26, 79, 156, 0.03));
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        .pillar-card h3 {
+            font-family: var(--font-display);
+            font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+            letter-spacing: 2px;
+            color: var(--color-ink);
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .pillar-card p {
+            font-size: 0.92rem;
+            color: var(--color-ink-muted);
+            line-height: 1.75;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ================================================================
+       PULL QUOTE
+    ================================================================ */
+        .pullquote {
+            padding: var(--section-pad) 0;
+            background: var(--color-bg-soft);
+        }
+
+        .pullquote-inner {
+            text-align: center;
+            position: relative;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .pullquote-mark {
+            font-family: var(--font-serif);
+            font-size: clamp(8rem, 20vw, 16rem);
+            line-height: 0.5;
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            pointer-events: none;
+            user-select: none;
+            background: linear-gradient(180deg, rgba(26, 79, 156, 0.08), rgba(26, 79, 156, 0.02));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .pullquote-text {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: clamp(1.3rem, 3vw, 2.1rem);
+            color: var(--color-ink);
+            line-height: 1.65;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 32px;
+        }
+
+        .pullquote-attr {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 24px;
+            border-radius: 60px;
+            background: var(--color-bg-card);
+            border: 1px solid rgba(10, 14, 26, 0.06);
+            font-size: 0.85rem;
+            color: var(--color-ink-muted);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .pullquote-attr-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-blue), var(--color-gold));
+        }
+
+        /* ================================================================
+       PROCESS / STEPPER
+    ================================================================ */
+        .process {
+            padding: var(--section-pad) 0;
+        }
+
+        .process-header {
+            text-align: center;
+            margin-bottom: 68px;
+        }
+
+        .stepper {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .step {
+            flex: 1;
+            max-width: 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .step-circle {
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            background: var(--color-bg-card);
+            border: 2px solid rgba(10, 14, 26, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            color: var(--color-blue);
+            margin-bottom: 22px;
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s, border-color 0.45s;
+            z-index: 2;
+            box-shadow: var(--shadow-md);
+        }
+
+        .step:hover .step-circle {
+            transform: scale(1.15);
+            border-color: var(--color-blue);
+            box-shadow: var(--shadow-blue);
+        }
+
+        .step-connector {
+            position: absolute;
+            top: 34px;
+            left: calc(50% + 34px);
+            width: calc(100% - 68px);
+            height: 2px;
+        }
+
+        .step-connector::before {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(26, 79, 156, 0.15), rgba(10, 14, 26, 0.05));
+        }
+
+        .step:last-child .step-connector {
+            display: none;
+        }
+
+        .step-label {
+            font-family: var(--font-display);
+            font-size: 1.08rem;
+            letter-spacing: 1.5px;
+            color: var(--color-ink);
+            margin-bottom: 8px;
+        }
+
+        .step-desc {
+            font-size: 0.82rem;
+            color: var(--color-ink-muted);
+            line-height: 1.65;
+            max-width: 160px;
+        }
+
+        /* ================================================================
+       FINAL CTA
+    ================================================================ */
+        .final-cta {
+            padding: var(--section-pad) 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-soft) 100%);
+        }
+
+        .final-cta-orb {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(80px);
+        }
+
+        .final-cta-orb-1 {
+            width: 400px;
+            height: 400px;
+            background: rgba(26, 79, 156, 0.06);
+            top: 10%;
+            left: -5%;
+            animation: float-shape-2 20s ease-in-out infinite;
+        }
+
+        .final-cta-orb-2 {
+            width: 300px;
+            height: 300px;
+            background: rgba(196, 146, 44, 0.05);
+            bottom: 5%;
+            right: -5%;
+            animation: float-shape-2 24s ease-in-out infinite reverse;
+        }
+
+        .final-cta .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .urgency-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 28px;
+            border-radius: 60px;
+            background: var(--color-bg-card);
+            border: 1px solid rgba(196, 146, 44, 0.2);
+            color: var(--color-gold-deep);
+            font-size: 0.72rem;
+            letter-spacing: 3.5px;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 36px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .urgency-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--color-gold);
+            animation: urgency-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes urgency-pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.4;
+                transform: scale(0.6);
+            }
+        }
+
+        .final-headline {
+            font-family: var(--font-display);
+            font-size: clamp(2.8rem, 8vw, 5.5rem);
+            line-height: 0.95;
+            letter-spacing: 3px;
+            margin-bottom: 22px;
+            background: var(--gradient-headline);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 6s ease-in-out infinite;
+        }
+
+        .final-sub {
+            font-size: 1.1rem;
+            color: var(--color-ink-muted);
+            max-width: 500px;
+            margin: 0 auto 48px;
+            line-height: 1.75;
+        }
+
+        /* ================================================================
+       FOOTER
+    ================================================================ */
+        .footer {
+            padding: 52px 0;
+            border-top: 1px solid rgba(10, 14, 26, 0.06);
+            text-align: center;
+            background: var(--color-bg);
+        }
+
+        .footer p {
+            font-size: 0.78rem;
+            color: var(--color-ink-muted);
+            opacity: 0.7;
+            line-height: 1.85;
+        }
+
+        /* ================================================================
+       MODAL
+    ================================================================ */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 14, 26, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s, visibility 0.4s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            width: 94%;
+            max-width: 900px;
+            height: 90vh;
+            background: var(--color-bg);
+            border: 1px solid rgba(10, 14, 26, 0.08);
+            border-radius: var(--modal-radius);
+            overflow: hidden;
+            position: relative;
+            transform: scale(0.96);
+            opacity: 0;
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: var(--color-bg-soft);
+            border: 1px solid rgba(10, 14, 26, 0.08);
+            color: var(--color-ink);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            z-index: 10;
+            transition: background 0.3s, box-shadow 0.3s;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .modal-close:hover {
+            background: var(--color-bg-card-alt);
+            box-shadow: var(--shadow-md);
+        }
+
+        .modal-content iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ================================================================
+       RESPONSIVE
+    ================================================================ */
+        @media (max-width: 900px) {
+            .stats-card {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .stat-item:not(:last-child)::after {
+                right: 10%;
+                top: auto;
+                bottom: -20px;
+                height: 1px;
+                width: 80%;
+            }
+
+            .opp-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pillar-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .stepper {
+                flex-direction: column;
+                align-items: center;
+                gap: 36px;
+            }
+
+            .step-connector {
+                top: auto;
+                bottom: -22px;
+                left: 50%;
+                transform: translateX(-50%) rotate(90deg);
+                width: 40px;
+            }
+
+            .hero-shape {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-logo img {
+                height: 34px;
+            }
+
+            .btn-primary {
+                padding: 13px 26px;
+                font-size: 0.92rem;
+            }
+
+            .hero {
+                padding: 100px 0 60px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ============================================================
+       NAVIGATION
+  ============================================================ -->
+    <nav class="nav" id="nav" role="navigation" aria-label="Main navigation">
+        <div class="container">
+            <a href="#" class="nav-logo" aria-label="Silver Peak Health Plans home">
+                <img src="logo.png" alt="Silver Peak Health Plans" />
+            </a>
+            <button class="btn-primary" id="cta-nav" aria-label="Get appointed with Silver Peak Health Plans">
+                CLAIM YOUR SPOT
+            </button>
+        </div>
+    </nav>
+
+    <!-- ============================================================
+       HERO
+  ============================================================ -->
+    <section class="hero" id="hero">
+        <!-- Floating 3D shapes -->
+        <div class="hero-shape hero-shape-1"></div>
+        <div class="hero-shape hero-shape-2"></div>
+        <div class="hero-shape hero-shape-3"></div>
+        <div class="hero-shape hero-shape-4"></div>
+
+        <!-- SVG Mountain -->
+        <svg class="hero-mountain" viewBox="0 0 1400 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 500L200 280L350 360L500 180L650 300L750 120L900 260L1050 100L1200 280L1400 200L1400 500Z"
+                fill="url(#mg1)" />
+            <path
+                d="M0 500L150 340L300 400L480 220L600 320L700 160L850 290L1000 140L1150 310L1300 240L1400 300L1400 500Z"
+                fill="url(#mg2)" />
+            <polygon points="750,120 720,220 780,220" fill="rgba(26,79,156,0.06)" />
+            <polygon points="1050,100 1015,210 1085,210" fill="rgba(26,79,156,0.04)" />
+            <polygon points="500,180 465,280 535,280" fill="rgba(196,146,44,0.03)" />
+            <line x1="750" y1="120" x2="500" y2="180" stroke="rgba(10,14,26,0.04)" stroke-width="1" />
+            <line x1="750" y1="120" x2="1050" y2="100" stroke="rgba(10,14,26,0.04)" stroke-width="1" />
+            <defs>
+                <linearGradient id="mg1" x1="700" y1="0" x2="700" y2="500" gradientUnits="userSpaceOnUse">
+                    <stop offset="0" stop-color="#1a4f9c" stop-opacity="0.08" />
+                    <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
+                </linearGradient>
+                <linearGradient id="mg2" x1="700" y1="100" x2="700" y2="500" gradientUnits="userSpaceOnUse">
+                    <stop offset="0" stop-color="#4a8fd4" stop-opacity="0.05" />
+                    <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
+                </linearGradient>
+            </defs>
+        </svg>
+
+        <div class="hero-content container">
+            <div class="hero-badge">BY INVITATION ONLY</div>
+            <h1 class="hero-headline">
+                <span class="line">STOP SELLING.</span>
+                <span class="line">START WINNING.</span>
+                <!-- Gradient sweep overlay -->
+                <span class="hero-headline-gradient" aria-hidden="true">
+                    <span class="line">STOP SELLING.</span>
+                    <span class="line">START WINNING.</span>
+                </span>
+            </h1>
+            <p class="hero-sub">
+                The plan your clients have been waiting for — and the opportunity your competition will never see.
+            </p>
+            <div class="hero-cta">
+                <button class="btn-primary btn-gold" id="cta-hero">GET APPOINTED NOW</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+       STATS BAND
+  ============================================================ -->
+    <section class="stats reveal">
+        <div class="container">
+            <div class="stats-card">
+                <div class="stat-item">
+                    <div class="stat-number" data-target="4" data-prefix="$" data-suffix="K+">$0K+</div>
+                    <div class="stat-label">Average annual savings per member</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="0" data-prefix="$" data-suffix="">$0</div>
+                    <div class="stat-label">Out-of-pocket with Care Coordination</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="24" data-prefix="" data-suffix="/7">0/7</div>
+                    <div class="stat-label">Concierge medical support via Amaze Health</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+       THE OPPORTUNITY
+  ============================================================ -->
+    <section class="opportunity" id="opportunity">
+        <div class="container">
+            <div class="opp-grid">
+                <div class="reveal">
+                    <div class="section-label">The Opportunity</div>
+                    <h2 class="section-headline">YOUR COMPETITION<br />DOESN'T HAVE THIS</h2>
+                    <p class="section-body">
+                        Most agents are fighting over the same commoditized plans with razor-thin margins. Meanwhile, a
+                        select few are offering their clients something radically different — a real major medical PPO
+                        that saves families thousands, with zero out-of-pocket care and concierge-level support.
+                    </p>
+                    <br />
+                    <p class="section-body">
+                        This is the product that makes clients stay. The one that builds your book and your reputation.
+                        And right now, spots are limited.
+                    </p>
+                </div>
+
+                <div class="reveal" style="transition-delay: 0.15s;">
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-card-icon">🏥</div>
+                            <h3>Real Major Medical</h3>
+                            <p>ACA MEC-compliant PPO coverage your clients can actually use — nationwide.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-card-icon">💊</div>
+                            <h3>$0 Prescriptions</h3>
+                            <p>Generic medications at zero cost. Your clients save every single month.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-card-icon">🧠</div>
+                            <h3>Mental Health Included</h3>
+                            <p>Full behavioral health support built right into the plan — no riders needed.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-card-icon">📱</div>
+                            <h3>Virtual-First Care</h3>
+                            <p>24/7 telemedicine via Amaze Health. Care on demand, from anywhere.</p>
+                        </div>
+                        <div class="feature-card feature-card-full">
+                            <div class="feature-card-icon"
+                                style="background: linear-gradient(135deg, rgba(196, 146, 44, 0.1), rgba(232, 184, 74, 0.05));">
+                                ⚡</div>
+                            <h3>THE UNFAIR ADVANTAGE</h3>
+                            <p>While other agents pitch the same recycled plans, you'll offer something no one else in
+                                the room has. That's not competition — that's domination.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+       THREE PILLARS
+  ============================================================ -->
+    <section class="pillars" id="pillars">
+        <div class="container">
+            <div class="pillars-header reveal">
+                <div class="section-label">Why Silver Peak</div>
+                <h2 class="section-headline">BUILT FOR AGENTS<br />WHO REFUSE TO BLEND IN</h2>
+            </div>
+            <div class="pillar-grid">
+                <div class="pillar-card reveal">
+                    <span class="pillar-ghost">01</span>
+                    <h3>EXCLUSIVE ACCESS</h3>
+                    <p>This isn't on the open market. Silver Peak agents get appointed into a product most brokers don't
+                        even know exists. Limited distribution means less competition and more conversions.</p>
+                </div>
+                <div class="pillar-card reveal" style="transition-delay: 0.1s;">
+                    <span class="pillar-ghost">02</span>
+                    <h3>MULTIPLE PLANS, ONE PITCH</h3>
+                    <p>Individual. Family. Group. We give you the versatility to serve every client segment with one
+                        powerful product suite — no patchwork quoting.</p>
+                </div>
+                <div class="pillar-card reveal" style="transition-delay: 0.2s;">
+                    <span class="pillar-ghost">03</span>
+                    <h3>FULL-STACK SUPPORT</h3>
+                    <p>From onboarding to enrollment, our team equips you with training, marketing collateral, and
+                        white-glove back-office support so you can focus on selling.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+       PULL QUOTE
+  ============================================================ -->
+    <section class="pullquote reveal">
+        <div class="container">
+            <div class="pullquote-inner">
+                <span class="pullquote-mark">"</span>
+                <p class="pullquote-text">
+                    I stopped competing the moment I started offering Silver Peak. My clients save thousands, my
+                    retention is through the roof, and my income has never been higher.
+                </p>
+                <div class="pullquote-attr">
+                    <span class="pullquote-attr-dot"></span>
+                    Licensed Agent — Silver Peak Partner
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+       4-STEP PROCESS
+  ============================================================ -->
+    <section class="process" id="process">
+        <div class="container">
+            <div class="process-header reveal">
+                <div class="section-label">How It Works</div>
+                <h2 class="section-headline">FOUR STEPS TO<br />YOUR NEW EDGE</h2>
+            </div>
+            <div class="stepper reveal" style="transition-delay: 0.15s;">
+                <div class="step">
+                    <div class="step-circle">01</div>
+                    <div class="step-connector"></div>
+                    <div class="step-label">GET APPOINTED</div>
+                    <div class="step-desc">Complete the readiness survey and lock in your spot.</div>
+                </div>
+                <div class="step">
+                    <div class="step-circle">02</div>
+                    <div class="step-connector"></div>
+                    <div class="step-label">GET TRAINED</div>
+                    <div class="step-desc">Access our exclusive product training and sales toolkit.</div>
+                </div>
+                <div class="step">
+                    <div class="step-circle">03</div>
+                    <div class="step-connector"></div>
+                    <div class="step-label">START PRESENTING</div>
+                    <div class="step-desc">Pitch a product your competition literally can't offer.</div>
+                </div>
+                <div class="step">
+                    <div class="step-circle">04</div>
+                    <div class="step-label">GET PAID</div>
+                    <div class="step-desc">Earn competitive commission with high client retention.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+       FINAL CTA
+  ============================================================ -->
+    <section class="final-cta" id="final-cta">
+        <div class="final-cta-orb final-cta-orb-1"></div>
+        <div class="final-cta-orb final-cta-orb-2"></div>
+        <div class="container">
+            <div class="reveal">
+                <div class="urgency-badge">
+                    <span class="urgency-dot"></span>
+                    LIMITED APPOINTMENTS AVAILABLE
+                </div>
+                <h2 class="final-headline">THIS IS YOUR<br />MOMENT.</h2>
+                <p class="final-sub">
+                    The agents who move first win the market. The rest are left quoting the same plans everyone already
+                    has. Don't be the rest.
+                </p>
+                <button class="btn-primary btn-gold" id="cta-final">CLAIM YOUR SPOT NOW</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+    <footer class="footer">
+        <div class="container">
+            <p>
+                Silver Peak Health Plans is a product of ProtectHealth, a B&C Agency, LLC. company.<br />
+                All plans are ACA MEC-compliant. Availability may vary by state. &copy; 2025 All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- ============================================================
+       MODAL
+  ============================================================ -->
+    <div class="modal-overlay" id="modal" role="dialog" aria-modal="true" aria-label="Appointment and Readiness Survey">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close" aria-label="Close survey modal">&times;</button>
+            <iframe id="modal-iframe" title="Appointment and Readiness Survey" loading="lazy"></iframe>
+        </div>
+    </div>
+
+    <!-- ============================================================
+       JAVASCRIPT
+  ============================================================ -->
+    <script>
+        (function () {
+            'use strict';
+
+            const SURVEY_URL = 'https://survey.alchemer.com/s3/7915428/Plan-Year-2025-Appoinment-and-Readiness-Session';
+
+            // ---- NAV SCROLL ----
+            const nav = document.getElementById('nav');
+            const onNavScroll = () => {
+                nav.classList.toggle('scrolled', window.scrollY > 60);
+            };
+            window.addEventListener('scroll', onNavScroll, { passive: true });
+            onNavScroll();
+
+            // ---- MODAL ----
+            const modal = document.getElementById('modal');
+            const modalIframe = document.getElementById('modal-iframe');
+            const modalClose = document.getElementById('modal-close');
+
+            function openModal() {
+                modalIframe.src = SURVEY_URL;
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeModal() {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+                setTimeout(() => { modalIframe.src = ''; }, 400);
+            }
+
+            document.getElementById('cta-nav').addEventListener('click', openModal);
+            document.getElementById('cta-hero').addEventListener('click', openModal);
+            document.getElementById('cta-final').addEventListener('click', openModal);
+
+            modalClose.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal();
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+            });
+
+            // ---- SCROLL REVEAL ----
+            const reveals = document.querySelectorAll('.reveal');
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        revealObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+            reveals.forEach((el) => revealObserver.observe(el));
+
+            // ---- STAT COUNT-UP ----
+            const statNumbers = document.querySelectorAll('.stat-number');
+            let statsCounted = false;
+
+            function animateCount(el) {
+                const target = parseInt(el.dataset.target, 10);
+                const prefix = el.dataset.prefix || '';
+                const suffix = el.dataset.suffix || '';
+                const duration = 1800;
+                const start = performance.now();
+
+                function update(now) {
+                    const elapsed = now - start;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    const current = Math.round(eased * target);
+                    el.textContent = prefix + current + suffix;
+                    if (progress < 1) requestAnimationFrame(update);
+                }
+                requestAnimationFrame(update);
+            }
+
+            const statsObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting && !statsCounted) {
+                        statsCounted = true;
+                        statNumbers.forEach(animateCount);
+                        statsObserver.disconnect();
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            const statsSection = document.querySelector('.stats-card');
+            if (statsSection) statsObserver.observe(statsSection);
+
+        })();
+    </script>
+</body>
+
+</html>
