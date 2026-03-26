@@ -1,31 +1,27 @@
 
 
-# Ensure PDF Upload Works with Pinecone
+# Fix RAG Upload Timeout Issue
 
-## Summary
-The RAG upload pipeline is already built and configured. The only action needed is to verify the `PINECONE_INDEX_URL` secret matches the URL you provided, then test the upload.
+## Problem
+The edge function `rag-upload` is timing out. LlamaParse polling can take up to 2 minutes (60 polls × 2s each), which exceeds the default edge function timeout. The document is stuck at "Processing / 0 chunks."
 
-## Steps
+## Solution
 
-### 1. Update the PINECONE_INDEX_URL secret
-Set the `PINECONE_INDEX_URL` secret to the exact value from your Pinecone dashboard:
-```
-https://silverpeak-rv7l8s6.svc.aped-4627-b74a.pinecone.io
-```
-This ensures the edge function connects to the correct index. The secret already exists but we'll confirm/update its value.
+### 1. Clean up stuck document
+Delete the stuck "ACA vs ERISA Comparison.pdf" record from the `documents` table so it doesn't clutter the admin view.
 
-### 2. Verify the pipeline end-to-end
-No code changes needed — the existing flow is:
-1. Admin uploads PDF on `/admin` page
-2. `rag-upload` edge function receives the file
-3. LlamaParse extracts text from PDF
-4. Text is chunked (1500 chars, 200 overlap)
-5. Chunks are embedded with Gemini (`gemini-embedding-001`, 768 dimensions — matches your Pinecone index)
-6. Vectors are upserted to Pinecone
-7. Document status updated to "ready" in the database
+### 2. Increase edge function timeout
+Add a configuration block in `supabase/config.toml` to set `wall_clock_limit` for `rag-upload` to 300 seconds (5 minutes), giving LlamaParse enough time to process.
 
-### Technical Notes
-- Pinecone index: 768 dimensions, cosine metric, dense — all compatible with current code
-- All secrets already configured: `PINECONE_API_KEY`, `PINECONE_INDEX_URL`, `LLAMA_PARSE_API_KEY`, `GEMINI_API_KEY`
-- The only potential issue: confirming the `PINECONE_INDEX_URL` secret value is exactly `https://silverpeak-rv7l8s6.svc.aped-4627-b74a.pinecone.io`
+### 3. Add a delete button to the admin page
+Add a delete/retry button on each document row so the admin can remove failed uploads without needing database access.
+
+### 4. Add better error handling
+Wrap the LlamaParse polling in a try/catch that updates the document status to "error" if the function is about to timeout, so documents don't get stuck in "processing" forever.
+
+## Technical Details
+
+- `supabase/config.toml`: Add `[functions.rag-upload]` block with `wall_clock_limit = 300`
+- `src/pages/Admin.tsx`: Add a delete button per document that calls `supabase.from("documents").delete().eq("id", doc.id)`
+- `supabase/functions/rag-upload/index.ts`: Reduce LlamaParse poll iterations or add logging so we can diagnose failures
 
