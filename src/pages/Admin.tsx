@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Upload, FileText, CheckCircle, AlertCircle, Loader2, ArrowLeft } from "lucide-react";
+import { Upload, FileText, CheckCircle, AlertCircle, Loader2, ArrowLeft, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
@@ -163,6 +163,18 @@ const Admin = () => {
                   <span className="text-xs text-muted-foreground capitalize">
                     {doc.status}
                   </span>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                    onClick={async (e) => {
+                      e.stopPropagation();
+                      await supabase.from("documents").delete().eq("id", doc.id);
+                      fetchDocuments();
+                    }}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
                 </div>
               </div>
             ))}
