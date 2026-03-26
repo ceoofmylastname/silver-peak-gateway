@@ -105,6 +105,8 @@ const Index = () => {
       <footer className="border-t border-border/50 py-8 px-6 text-center text-sm text-muted-foreground">
         © {new Date().getFullYear()} Silver Peak Health Plans. All rights reserved.
       </footer>
+
+      <ChatWidget />
     </div>
   );
 };
