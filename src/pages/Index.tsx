@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowDown, Shield, TrendingUp, Users } from "lucide-react";
 import logo from "@/assets/silver-peak-logo.png";
+import ChatWidget from "@/components/ChatWidget";
 
 const Index = () => {
   const [showSurvey, setShowSurvey] = useState(false);
@@ -104,6 +105,8 @@ const Index = () => {
       <footer className="border-t border-border/50 py-8 px-6 text-center text-sm text-muted-foreground">
         © {new Date().getFullYear()} Silver Peak Health Plans. All rights reserved.
       </footer>
+
+      <ChatWidget />
     </div>
   );
 };
