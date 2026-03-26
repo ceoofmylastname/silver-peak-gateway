@@ -1,27 +1,34 @@
 
 
-# Fix RAG Upload Timeout Issue
+# Update RAG Chat System Prompt — Precision + Sales Mode
 
-## Problem
-The edge function `rag-upload` is timing out. LlamaParse polling can take up to 2 minutes (60 polls × 2s each), which exceeds the default edge function timeout. The document is stuck at "Processing / 0 chunks."
+## Summary
+Replace the current casual system prompt in `supabase/functions/rag-chat/index.ts` with the master RAG control prompt. This keeps the Silver Peak context but adds strict source-grounding, zero-hallucination rules, structured output format, and dual-layer response modes (Strict / Explain / Sales).
 
-## Solution
+## What Changes
 
-### 1. Clean up stuck document
-Delete the stuck "ACA vs ERISA Comparison.pdf" record from the `documents` table so it doesn't clutter the admin view.
+### 1. Replace SYSTEM_PROMPT in `supabase/functions/rag-chat/index.ts`
 
-### 2. Increase edge function timeout
-Add a configuration block in `supabase/config.toml` to set `wall_clock_limit` for `rag-upload` to 300 seconds (5 minutes), giving LlamaParse enough time to process.
+The new prompt will:
+- Enforce source-only answers — no hallucination, no guessing
+- Require `Answer:` + `Source:` output format by default
+- Add internal validation logic (is this in the data?)
+- Return "No reliable answer found in the provided knowledge base" when unsure
+- Support three modes: **Strict** (default), **Explain** (if asked), **Sales** (if asked)
+- Keep Silver Peak branding and agent-contracting focus as contextual framing
+- Still inject retrieved Pinecone context the same way
 
-### 3. Add a delete button to the admin page
-Add a delete/retry button on each document row so the admin can remove failed uploads without needing database access.
+### 2. Adjust context injection
+Update the "no context found" fallback message to align with the new strict rules — instead of saying "answer based on general knowledge," it will say "No reliable answer found" when no documents match.
 
-### 4. Add better error handling
-Wrap the LlamaParse polling in a try/catch that updates the document status to "error" if the function is about to timeout, so documents don't get stuck in "processing" forever.
+## What Stays the Same
+- Embedding logic (Gemini embedding-001, 768 dims)
+- Pinecone query logic
+- Streaming via Lovable AI gateway
+- Chat widget UI — no frontend changes
+- All secrets and configuration
 
 ## Technical Details
-
-- `supabase/config.toml`: Add `[functions.rag-upload]` block with `wall_clock_limit = 300`
-- `src/pages/Admin.tsx`: Add a delete button per document that calls `supabase.from("documents").delete().eq("id", doc.id)`
-- `supabase/functions/rag-upload/index.ts`: Reduce LlamaParse poll iterations or add logging so we can diagnose failures
+- **File**: `supabase/functions/rag-chat/index.ts` — replace `SYSTEM_PROMPT` constant (lines 9-25) and update the `systemWithContext` fallback string (~line 92)
+- No new dependencies, no migration, no config changes
 
