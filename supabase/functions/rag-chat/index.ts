@@ -143,7 +143,7 @@ serve(async (req) => {
 
     const systemWithContext = context
       ? `${SYSTEM_PROMPT}\n\n## Relevant context from Silver Peak documents:\n\n${context}`
-      : `${SYSTEM_PROMPT}\n\n(No specific documents found for this query — answer based on general knowledge and suggest they contact Silver Peak directly for specifics.)`;
+      : `${SYSTEM_PROMPT}\n\n## Retrieved Context:\nNo documents matched this query. You MUST respond with: "No reliable answer found in the provided knowledge base. Please contact the Silver Peak team directly for specifics."`;
 
     // Call Lovable AI gateway with streaming
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
