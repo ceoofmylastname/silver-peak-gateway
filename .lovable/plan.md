@@ -1,15 +1,36 @@
 
 
-# Fix: Remove Default Vite CSS Overrides
+# Restore Landing Page to Original Design
 
 ## Problem
-`src/App.css` contains default Vite/React template styles that constrain the layout:
-- `#root { max-width: 1280px; margin: 0 auto; padding: 2rem; text-align: center; }` — this limits the page width and adds unwanted padding, breaking the full-bleed hero and nav.
+The current landing page (dark theme, "Elevate Your Insurance Business" headline) does not match the original design shown in the screenshot. The original had a light/cream theme, bold "STOP SELLING. START WINNING." headline, floating 3D glassmorphic shapes, and different copy/buttons.
 
-This file is likely a leftover from the original Vite scaffold and was never cleaned up.
+## Changes Required
 
-## Fix
-**Clear `src/App.css`** — remove all contents. The landing page styles come from Tailwind classes in `Index.tsx` and the theme in `src/index.css`, so this file's styles are purely interfering.
+### 1. Update `src/index.css` — Switch to Light Theme
+- Change CSS variables from dark palette to light/cream:
+  - Background: warm cream/off-white (~`40 30% 96%`)
+  - Foreground: dark charcoal
+  - Primary: navy blue (`215 80% 25%`)
+  - Accent: gold (keep existing `38 90% 55%`)
+  - Card, muted, border: light warm grays
+- Add a serif/italic font import (e.g. Playfair Display) for the subheading
 
-No other files need to change. The landing page code in `Index.tsx` is intact and correct. The ChatWidget overlay in `App.tsx` is properly wired. This single CSS fix will restore the original full-width, dark-themed landing page appearance.
+### 2. Rewrite `src/pages/Index.tsx` — Match Screenshot Layout
+- **Nav**: Logo left, "CLAIM YOUR SPOT" dark blue rounded-full button right
+- **Hero** (centered, full viewport):
+  - "BY INVITATION ONLY" pill badge (light border, uppercase, tracking-widest)
+  - "STOP SELLING. START WINNING." — large bold uppercase headline, dark/gold color
+  - Italic serif subtext: "The plan your clients have been waiting for — and the opportunity your competition will never see."
+  - Gold "GET APPOINTED NOW" rounded CTA button
+- **Floating 3D decorative shapes**: Rounded squares and circles positioned around the edges with subtle shadows, glass/frosted effect, partially off-screen
+- **Bottom gradient**: Subtle blue-to-purple gradient fade at the very bottom
+- **Survey section**: Keep the existing iframe reveal logic (on CTA click, scroll to embedded survey)
+- **Footer**: Keep as-is, adapt colors to light theme
+- Remove the trust signals grid (not in screenshot)
+
+### 3. No changes to:
+- `ChatWidget.tsx` (keep the RAG chat widget)
+- `App.tsx` (already correct)
+- Edge functions (unchanged)
 
