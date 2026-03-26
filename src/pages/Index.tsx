@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowDown, Shield, TrendingUp, Users } from "lucide-react";
 import logo from "@/assets/silver-peak-logo.png";
+import ChatWidget from "@/components/ChatWidget";
 
 const Index = () => {
   const [showSurvey, setShowSurvey] = useState(false);
