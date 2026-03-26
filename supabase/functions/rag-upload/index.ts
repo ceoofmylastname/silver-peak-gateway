@@ -61,12 +61,12 @@ async function embedTexts(texts: string[], apiKey: string): Promise<number[][]> 
   const embeddings: number[][] = [];
   for (const text of texts) {
     const resp = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key=${apiKey}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: "models/text-embedding-004",
+          model: "models/gemini-embedding-001",
           content: { parts: [{ text }] },
         }),
       }
