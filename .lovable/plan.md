@@ -1,34 +1,30 @@
 
 
-# Update RAG Chat System Prompt — Precision + Sales Mode
+# Update RAG System Prompt — Ultra-Strict Source-Locked Mode
 
 ## Summary
-Replace the current casual system prompt in `supabase/functions/rag-chat/index.ts` with the master RAG control prompt. This keeps the Silver Peak context but adds strict source-grounding, zero-hallucination rules, structured output format, and dual-layer response modes (Strict / Explain / Sales).
+Replace the current `SYSTEM_PROMPT` in `supabase/functions/rag-chat/index.ts` with the new ultra-strict, source-locked prompt. This tightens the existing rules further — zero expansion, no helpful AI behavior, fail-fast on uncertainty, audit-proof outputs.
 
 ## What Changes
 
-### 1. Replace SYSTEM_PROMPT in `supabase/functions/rag-chat/index.ts`
+### 1. Replace `SYSTEM_PROMPT` in `supabase/functions/rag-chat/index.ts`
+Swap the current prompt (lines ~9–67) with the new strict prompt that enforces:
+- **Source-locked answers only** — every word must trace to source
+- **Zero expansion policy** — no synonyms, analogies, clarifications
+- **No outside knowledge** — ignore everything not in documents
+- **Fail fast** — if not 100% certain, return "No reliable answer found"
+- **Internal validation** — silent pre-output checks
+- **Strict mode enforcement** — reject any response with interpretation
+- Keep Silver Peak agent-contracting context framing
+- Keep the three response modes (Strict default, Explain, Sales) as a stacked second layer
 
-The new prompt will:
-- Enforce source-only answers — no hallucination, no guessing
-- Require `Answer:` + `Source:` output format by default
-- Add internal validation logic (is this in the data?)
-- Return "No reliable answer found in the provided knowledge base" when unsure
-- Support three modes: **Strict** (default), **Explain** (if asked), **Sales** (if asked)
-- Keep Silver Peak branding and agent-contracting focus as contextual framing
-- Still inject retrieved Pinecone context the same way
-
-### 2. Adjust context injection
-Update the "no context found" fallback message to align with the new strict rules — instead of saying "answer based on general knowledge," it will say "No reliable answer found" when no documents match.
+### 2. No-context fallback stays aligned
+Already returns the strict fallback message — no change needed there.
 
 ## What Stays the Same
-- Embedding logic (Gemini embedding-001, 768 dims)
-- Pinecone query logic
-- Streaming via Lovable AI gateway
-- Chat widget UI — no frontend changes
-- All secrets and configuration
+- Embedding logic, Pinecone query, streaming, chat widget UI, all secrets
 
 ## Technical Details
-- **File**: `supabase/functions/rag-chat/index.ts` — replace `SYSTEM_PROMPT` constant (lines 9-25) and update the `systemWithContext` fallback string (~line 92)
-- No new dependencies, no migration, no config changes
+- **File**: `supabase/functions/rag-chat/index.ts` — replace `SYSTEM_PROMPT` constant only
+- No migrations, no config changes, no frontend changes
 
