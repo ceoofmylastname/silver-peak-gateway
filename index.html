@@ -1142,6 +1142,390 @@
                 padding: 100px 0 60px;
             }
         }
+
+        /* ================================================================
+           CHAT WIDGET
+        ================================================================ */
+
+        /* --- Trigger Button --- */
+        .chat-trigger {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9998;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, #0B1E3D, #C4973A);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            transition: transform 200ms ease, opacity 300ms ease;
+            animation: chatGlow 2.5s ease-in-out infinite;
+        }
+        .chat-trigger:hover {
+            transform: scale(1.08);
+            animation: chatGlowHover 2.5s ease-in-out infinite;
+        }
+        .chat-trigger.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.6);
+        }
+        .chat-trigger svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+        .chat-trigger-dot {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #FF4444;
+        }
+
+        @keyframes chatGlow {
+            0%, 100% { box-shadow: 0 8px 24px rgba(0,0,0,0.3), 0 0 20px 8px rgba(196,151,58,0); }
+            50% { box-shadow: 0 8px 24px rgba(0,0,0,0.3), 0 0 20px 8px rgba(196,151,58,0.4); }
+        }
+        @keyframes chatGlowHover {
+            0%, 100% { box-shadow: 0 8px 24px rgba(0,0,0,0.3), 0 0 24px 12px rgba(196,151,58,0.15); }
+            50% { box-shadow: 0 8px 24px rgba(0,0,0,0.3), 0 0 24px 12px rgba(196,151,58,0.55); }
+        }
+
+        /* --- Chat Panel --- */
+        .chat-panel {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            width: 380px;
+            height: 560px;
+            border-radius: 24px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+
+            background: rgba(8, 18, 40, 0.82);
+            backdrop-filter: blur(28px) saturate(180%);
+            -webkit-backdrop-filter: blur(28px) saturate(180%);
+            border: 1px solid rgba(196, 151, 58, 0.25);
+            box-shadow:
+                0 32px 64px rgba(0,0,0,0.55),
+                inset 0 0 0 1px rgba(255,255,255,0.06),
+                inset 0 1px 0 rgba(196,151,58,0.3);
+            transform: perspective(1000px) rotateX(0.5deg);
+
+            /* closed state */
+            opacity: 0;
+            pointer-events: none;
+            transform-origin: bottom right;
+            scale: 0.6;
+            transition: scale 380ms cubic-bezier(0.34, 1.56, 0.64, 1),
+                        opacity 380ms cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .chat-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            background: linear-gradient(135deg, rgba(196,151,58,0.04) 0%, transparent 100%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .chat-panel.open {
+            opacity: 1;
+            pointer-events: auto;
+            scale: 1;
+            transform: perspective(1000px) rotateX(0.5deg);
+        }
+
+        /* Gold border shimmer on hover */
+        .chat-panel.open:hover {
+            border-color: rgba(196, 151, 58, 0.45);
+            transition: border-color 1s ease;
+        }
+
+        /* --- Panel Header --- */
+        .chat-header {
+            position: relative;
+            z-index: 1;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            background: linear-gradient(135deg, #0B1E3D 0%, #162B52 100%);
+            border-bottom: 1px solid rgba(196,151,58,0.2);
+            flex-shrink: 0;
+        }
+        .chat-header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .chat-header-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0B1E3D, #162B52);
+            border: 1.5px solid rgba(196,151,58,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .chat-header-avatar svg {
+            width: 20px;
+            height: 20px;
+        }
+        .chat-header-name {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            line-height: 1.2;
+        }
+        .chat-header-status {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 400;
+            color: rgba(196,151,58,0.8);
+        }
+        .chat-header-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 200ms ease, opacity 200ms ease;
+        }
+        .chat-header-close svg {
+            width: 20px;
+            height: 20px;
+            stroke: rgba(255,255,255,0.7);
+            transition: stroke 200ms ease;
+        }
+        .chat-header-close:hover {
+            transform: rotate(90deg);
+        }
+        .chat-header-close:hover svg {
+            stroke: white;
+        }
+
+        /* Animated gold shimmer line */
+        .chat-header-shimmer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #C4973A, #E8B84B, #C4973A, transparent);
+            background-size: 200% 100%;
+            animation: shimmer 2.5s linear infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* --- Messages Area --- */
+        .chat-messages {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .chat-messages::-webkit-scrollbar {
+            width: 4px;
+        }
+        .chat-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: rgba(196,151,58,0.4);
+            border-radius: 2px;
+        }
+
+        /* Message containers */
+        .chat-msg {
+            display: flex;
+            flex-direction: column;
+            animation: msgSlideIn 200ms ease-out;
+        }
+        .chat-msg.user { align-items: flex-end; }
+        .chat-msg.assistant { align-items: flex-start; }
+
+        @keyframes msgSlideIn {
+            from { opacity: 0; transform: translateY(8px) scale(0.95); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* User bubble */
+        .chat-bubble-user {
+            max-width: 78%;
+            padding: 10px 14px;
+            background: linear-gradient(135deg, #C4973A, #E8B84B);
+            color: #0B1E3D;
+            border-radius: 18px 18px 4px 18px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.45;
+            box-shadow: 0 4px 12px rgba(196,151,58,0.3);
+            word-wrap: break-word;
+        }
+
+        /* Assistant bubble */
+        .chat-bubble-assistant {
+            max-width: 84%;
+            padding: 12px 14px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-left: 2px solid rgba(196,151,58,0.6);
+            color: rgba(255,255,255,0.92);
+            border-radius: 18px 18px 18px 4px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            line-height: 1.55;
+            word-wrap: break-word;
+        }
+
+        /* Timestamp */
+        .chat-time {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 10px;
+            color: rgba(255,255,255,0.3);
+            margin-top: 4px;
+            padding: 0 4px;
+        }
+
+        /* Typing indicator */
+        .chat-typing {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 12px 14px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-left: 2px solid rgba(196,151,58,0.6);
+            border-radius: 18px 18px 18px 4px;
+            width: fit-content;
+        }
+        .chat-typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #C4973A;
+            animation: typingWave 1.2s ease-in-out infinite;
+        }
+        .chat-typing-dot:nth-child(2) { animation-delay: 200ms; }
+        .chat-typing-dot:nth-child(3) { animation-delay: 400ms; }
+
+        @keyframes typingWave {
+            0%, 60%, 100% { transform: scale(0.6); opacity: 0.4; }
+            30% { transform: scale(1); opacity: 1; }
+        }
+
+        /* --- Input Bar --- */
+        .chat-input-bar {
+            position: relative;
+            z-index: 1;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: rgba(11, 30, 61, 0.9);
+            border-top: 1px solid rgba(196,151,58,0.15);
+            flex-shrink: 0;
+        }
+        .chat-input {
+            flex: 1;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 12px;
+            padding: 10px 14px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            color: white;
+            outline: none;
+            transition: border-color 200ms ease, box-shadow 200ms ease;
+        }
+        .chat-input::placeholder {
+            color: rgba(255,255,255,0.35);
+        }
+        .chat-input:focus {
+            border-color: rgba(196,151,58,0.5);
+            box-shadow: 0 0 0 3px rgba(196,151,58,0.12);
+        }
+
+        /* Input nudge animation */
+        @keyframes inputNudge {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(196,151,58,0); }
+            50% { box-shadow: 0 0 0 4px rgba(196,151,58,0.15); }
+        }
+        .chat-input.nudge {
+            animation: inputNudge 2s ease-in-out infinite;
+        }
+
+        .chat-send {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, #C4973A, #E8B84B);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: transform 200ms ease, filter 200ms ease, opacity 200ms ease;
+        }
+        .chat-send svg {
+            width: 18px;
+            height: 18px;
+            fill: white;
+        }
+        .chat-send:hover {
+            transform: scale(1.08);
+            filter: brightness(1.1);
+        }
+        .chat-send:active {
+            transform: scale(0.92);
+        }
+        .chat-send.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* --- Mobile --- */
+        @media (max-width: 480px) {
+            .chat-trigger {
+                bottom: 16px;
+                right: 16px;
+            }
+            .chat-panel {
+                width: 100vw;
+                height: 85vh;
+                bottom: 0;
+                right: 0;
+                border-radius: 24px 24px 0 0;
+            }
+        }
     </style>
 </head>
 
@@ -1525,6 +1909,235 @@
     <div id="chat-widget-root"></div>
     <div id="root" style="display:none"></div>
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- ============================================================
+       CHAT WIDGET (standalone fallback)
+    ============================================================ -->
+
+    <!-- Trigger Button -->
+    <button class="chat-trigger" id="chat-trigger" aria-label="Open chat assistant">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12z"/></svg>
+        <span class="chat-trigger-dot"></span>
+    </button>
+
+    <!-- Chat Panel -->
+    <div class="chat-panel" id="chat-panel">
+        <!-- Header -->
+        <div class="chat-header">
+            <div class="chat-header-left">
+                <div class="chat-header-avatar">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 14h4v8h12v-8h4L12 2z" fill="white" opacity="0.9"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="chat-header-name">Silver Peak AI</div>
+                    <div class="chat-header-status">Always here to help</div>
+                </div>
+            </div>
+            <button class="chat-header-close" id="chat-close" aria-label="Close chat">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+            <div class="chat-header-shimmer"></div>
+        </div>
+
+        <!-- Messages -->
+        <div class="chat-messages" id="chat-messages"></div>
+
+        <!-- Input Bar -->
+        <div class="chat-input-bar">
+            <input type="text" class="chat-input" id="chat-input" placeholder="Ask about plans, commissions, or how to get started..." autocomplete="off" />
+            <button class="chat-send disabled" id="chat-send" aria-label="Send message">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.59 5.58L20 12l-8-8-8 8z"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        'use strict';
+
+        const API_URL = 'https://silver-peak-gateway-production.up.railway.app/chat';
+
+        // DOM refs
+        const trigger  = document.getElementById('chat-trigger');
+        const panel    = document.getElementById('chat-panel');
+        const closeBtn = document.getElementById('chat-close');
+        const msgArea  = document.getElementById('chat-messages');
+        const input    = document.getElementById('chat-input');
+        const sendBtn  = document.getElementById('chat-send');
+
+        // State
+        let isOpen = false;
+        let history = []; // full conversation: {role, content}
+        let isWaiting = false;
+        let nudgeTimer = null;
+        let welcomeShown = false;
+
+        // --- Helpers ---
+
+        function formatTime() {
+            const d = new Date();
+            let h = d.getHours(), m = d.getMinutes();
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12 || 12;
+            return h + ':' + (m < 10 ? '0' : '') + m + ' ' + ampm;
+        }
+
+        function scrollToBottom() {
+            requestAnimationFrame(() => {
+                msgArea.scrollTop = msgArea.scrollHeight;
+            });
+        }
+
+        function addMessage(role, text) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'chat-msg ' + role;
+
+            const bubble = document.createElement('div');
+            bubble.className = role === 'user' ? 'chat-bubble-user' : 'chat-bubble-assistant';
+            bubble.textContent = text;
+
+            const time = document.createElement('div');
+            time.className = 'chat-time';
+            time.textContent = formatTime();
+
+            wrapper.appendChild(bubble);
+            wrapper.appendChild(time);
+            msgArea.appendChild(wrapper);
+            scrollToBottom();
+        }
+
+        function showTyping() {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'chat-msg assistant';
+            wrapper.id = 'typing-indicator';
+
+            const dots = document.createElement('div');
+            dots.className = 'chat-typing';
+            dots.innerHTML = '<div class="chat-typing-dot"></div><div class="chat-typing-dot"></div><div class="chat-typing-dot"></div>';
+
+            wrapper.appendChild(dots);
+            msgArea.appendChild(wrapper);
+            scrollToBottom();
+        }
+
+        function hideTyping() {
+            const el = document.getElementById('typing-indicator');
+            if (el) el.remove();
+        }
+
+        function updateSendBtn() {
+            if (input.value.trim().length > 0 && !isWaiting) {
+                sendBtn.classList.remove('disabled');
+            } else {
+                sendBtn.classList.add('disabled');
+            }
+        }
+
+        // --- Nudge input after 3s idle ---
+        function startNudgeTimer() {
+            clearTimeout(nudgeTimer);
+            nudgeTimer = setTimeout(() => {
+                if (isOpen && input.value.trim() === '') {
+                    input.classList.add('nudge');
+                }
+            }, 3000);
+        }
+        function stopNudge() {
+            input.classList.remove('nudge');
+            clearTimeout(nudgeTimer);
+        }
+
+        // --- Open / Close ---
+        function openChat() {
+            isOpen = true;
+            trigger.classList.add('hidden');
+            panel.classList.add('open');
+
+            if (!welcomeShown) {
+                welcomeShown = true;
+                setTimeout(() => {
+                    addMessage('assistant', "Hey! I\u2019m Alex, your Silver Peak specialist. Whether you\u2019re curious about the plans, the appointment process, or what makes this opportunity different \u2014 I\u2019ve got you. What\u2019s on your mind?");
+                    history.push({ role: 'assistant', content: "Hey! I\u2019m Alex, your Silver Peak specialist. Whether you\u2019re curious about the plans, the appointment process, or what makes this opportunity different \u2014 I\u2019ve got you. What\u2019s on your mind?" });
+                }, 300);
+            }
+
+            startNudgeTimer();
+            setTimeout(() => input.focus(), 400);
+        }
+
+        function closeChat() {
+            isOpen = false;
+            panel.classList.remove('open');
+            stopNudge();
+            setTimeout(() => {
+                trigger.classList.remove('hidden');
+            }, 200);
+        }
+
+        trigger.addEventListener('click', openChat);
+        closeBtn.addEventListener('click', closeChat);
+
+        // --- Send message ---
+        async function send() {
+            const text = input.value.trim();
+            if (!text || isWaiting) return;
+
+            stopNudge();
+            input.value = '';
+            updateSendBtn();
+
+            // Add user message
+            addMessage('user', text);
+            history.push({ role: 'user', content: text });
+
+            // Show typing
+            isWaiting = true;
+            updateSendBtn();
+            showTyping();
+
+            try {
+                // Send last 6 turns for context
+                const recentHistory = history.slice(-6);
+
+                const res = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: text,
+                        history: recentHistory.slice(0, -1) // exclude the message we just sent (it's in "message")
+                    })
+                });
+
+                if (!res.ok) throw new Error('API error');
+
+                const data = await res.json();
+                hideTyping();
+                addMessage('assistant', data.reply);
+                history.push({ role: 'assistant', content: data.reply });
+            } catch (e) {
+                hideTyping();
+                addMessage('assistant', "Sorry, I had a hiccup. Give it another shot!");
+            }
+
+            isWaiting = false;
+            updateSendBtn();
+            startNudgeTimer();
+        }
+
+        sendBtn.addEventListener('click', send);
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') send();
+        });
+        input.addEventListener('input', () => {
+            updateSendBtn();
+            stopNudge();
+            startNudgeTimer();
+        });
+
+    })();
+    </script>
 </body>
 
 </html>

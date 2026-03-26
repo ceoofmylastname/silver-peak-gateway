@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin — Silver Peak Knowledge Base</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+        /* ================================================================
+           RESET & BASE
+        ================================================================ */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --navy: #0B1E3D;
+            --page-bg: #080f1e;
+            --gold: #C4973A;
+            --gold-light: #E8B84B;
+            --gold-glow: rgba(196,151,58,0.15);
+            --success: #22c55e;
+            --error: #ef4444;
+            --white: rgba(255,255,255,0.92);
+            --muted: rgba(255,255,255,0.45);
+            --card-bg: rgba(8,18,40,0.7);
+            --card-border: rgba(196,151,58,0.15);
+            --glass-blur: blur(20px);
+            --radius: 16px;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--page-bg);
+            color: var(--white);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        button { font-family: inherit; cursor: pointer; }
+        input { font-family: inherit; }
+
+        /* ================================================================
+           PASSWORD GATE
+        ================================================================ */
+        .gate-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--page-bg);
+            transition: opacity 400ms ease;
+        }
+        .gate-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .gate-card {
+            width: 360px;
+            padding: 40px 32px;
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            text-align: center;
+            box-shadow: 0 32px 64px rgba(0,0,0,0.5);
+            transition: transform 200ms ease;
+        }
+        .gate-card.shake {
+            animation: shake 400ms ease;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-12px); }
+            40% { transform: translateX(10px); }
+            60% { transform: translateX(-8px); }
+            80% { transform: translateX(6px); }
+        }
+        .gate-logo {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--navy), #162B52);
+            border: 1.5px solid rgba(196,151,58,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .gate-logo svg { width: 28px; height: 28px; }
+        .gate-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+        .gate-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 12px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 200ms, box-shadow 200ms;
+            margin-bottom: 8px;
+        }
+        .gate-input:focus {
+            border-color: rgba(196,151,58,0.5);
+            box-shadow: 0 0 0 3px rgba(196,151,58,0.12);
+        }
+        .gate-input::placeholder { color: var(--muted); }
+        .gate-error {
+            color: var(--error);
+            font-size: 13px;
+            min-height: 20px;
+            margin-bottom: 12px;
+        }
+        .gate-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--navy);
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            transition: transform 200ms, filter 200ms;
+        }
+        .gate-btn:hover { transform: scale(1.02); filter: brightness(1.08); }
+        .gate-btn:active { transform: scale(0.97); }
+
+        /* ================================================================
+           DASHBOARD
+        ================================================================ */
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+        }
+        .dashboard.visible { display: block; }
+
+        /* Header */
+        .dash-header {
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            background: rgba(8,18,40,0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .dash-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .dash-header-logo {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--navy), #162B52);
+            border: 1px solid rgba(196,151,58,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .dash-header-logo svg { width: 18px; height: 18px; }
+        .dash-header-title {
+            font-size: 15px;
+            font-weight: 600;
+        }
+        .dash-header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .stats-pill {
+            padding: 6px 14px;
+            background: rgba(196,151,58,0.08);
+            border: 1px solid rgba(196,151,58,0.2);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--gold);
+            white-space: nowrap;
+        }
+        .stats-pill.loading {
+            width: 140px;
+            height: 28px;
+            background: linear-gradient(90deg, rgba(196,151,58,0.05), rgba(196,151,58,0.12), rgba(196,151,58,0.05));
+            background-size: 200% 100%;
+            animation: skeleton 1.5s ease infinite;
+            border-color: transparent;
+        }
+        @keyframes skeleton {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .sign-out-link {
+            font-size: 13px;
+            color: var(--muted);
+            background: none;
+            border: none;
+            text-decoration: none;
+            transition: color 200ms;
+        }
+        .sign-out-link:hover { color: var(--white); }
+
+        /* Main grid */
+        .dash-main {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 24px;
+            padding: 24px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+        @media (max-width: 768px) {
+            .dash-main {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ================================================================
+           LEFT COLUMN — UPLOAD
+        ================================================================ */
+        .upload-card {
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        /* Drop zone */
+        .drop-zone {
+            min-height: 320px;
+            border: 2px dashed rgba(196,151,58,0.4);
+            border-radius: 20px;
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 40px 24px;
+            transition: border-color 200ms, background 200ms;
+            cursor: pointer;
+        }
+        .drop-zone.dragover {
+            border-color: var(--gold);
+            border-style: solid;
+            background: rgba(196,151,58,0.06);
+        }
+        .drop-zone-icon { color: var(--gold); }
+        .drop-zone-icon svg { width: 48px; height: 48px; }
+        .drop-zone-heading {
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+        }
+        .drop-zone-sub {
+            font-size: 13px;
+            color: var(--muted);
+            text-align: center;
+            max-width: 340px;
+            line-height: 1.5;
+        }
+        .browse-btn {
+            margin-top: 8px;
+            padding: 10px 24px;
+            background: transparent;
+            border: 1.5px solid var(--gold);
+            color: var(--gold);
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 200ms, transform 200ms;
+        }
+        .browse-btn:hover {
+            background: rgba(196,151,58,0.08);
+            transform: translateY(-1px);
+        }
+
+        /* Queue */
+        .queue { padding: 0 20px 20px; }
+        .queue-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            margin-bottom: 8px;
+            transition: background 200ms;
+        }
+        .queue-item.success { border-color: rgba(34,197,94,0.3); }
+        .queue-item.error { border-color: rgba(239,68,68,0.3); }
+
+        .file-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+        .file-icon.pdf   { background: rgba(239,68,68,0.15); color: #ef4444; }
+        .file-icon.docx  { background: rgba(59,130,246,0.15); color: #3b82f6; }
+        .file-icon.pptx  { background: rgba(249,115,22,0.15); color: #f97316; }
+        .file-icon.txt   { background: rgba(156,163,175,0.15); color: #9ca3af; }
+        .file-icon.md    { background: rgba(168,85,247,0.15); color: #a855f7; }
+
+        .queue-info { flex: 1; min-width: 0; }
+        .queue-name {
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .queue-size {
+            font-size: 11px;
+            color: var(--muted);
+        }
+        .queue-status {
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .queue-status.queued { color: var(--muted); }
+        .queue-status.uploading { color: var(--gold); }
+        .queue-status.indexed { color: var(--success); }
+        .queue-status.failed { color: var(--error); }
+
+        .queue-remove {
+            background: none;
+            border: none;
+            color: var(--muted);
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 200ms;
+        }
+        .queue-remove:hover { color: var(--error); }
+        .queue-remove svg { width: 16px; height: 16px; }
+
+        .upload-all-btn {
+            width: calc(100% - 40px);
+            margin: 0 20px 20px;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--navy);
+            font-size: 15px;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            transition: transform 200ms, filter 200ms, opacity 200ms;
+            display: none;
+        }
+        .upload-all-btn.visible { display: block; }
+        .upload-all-btn:hover { transform: translateY(-1px); filter: brightness(1.08); }
+        .upload-all-btn:active { transform: translateY(0); }
+        .upload-all-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            filter: none;
+        }
+
+        /* ================================================================
+           RIGHT COLUMN — ACTIVITY
+        ================================================================ */
+        .activity-card {
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius);
+            display: flex;
+            flex-direction: column;
+        }
+        .activity-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .activity-header h3 {
+            font-size: 15px;
+            font-weight: 600;
+        }
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: livePulse 2s ease-in-out infinite;
+        }
+        @keyframes livePulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.4); }
+            50% { box-shadow: 0 0 0 4px rgba(34,197,94,0); }
+        }
+
+        .activity-feed {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px 16px;
+            max-height: 360px;
+        }
+        .activity-feed::-webkit-scrollbar { width: 4px; }
+        .activity-feed::-webkit-scrollbar-track { background: transparent; }
+        .activity-feed::-webkit-scrollbar-thumb { background: rgba(196,151,58,0.3); border-radius: 2px; }
+
+        .activity-empty {
+            padding: 32px 16px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            animation: fadeSlide 200ms ease;
+        }
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(-6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .activity-item:last-child { border-bottom: none; }
+        .activity-time {
+            font-size: 10px;
+            color: var(--muted);
+            white-space: nowrap;
+            min-width: 75px;
+            padding-top: 2px;
+        }
+        .activity-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .activity-icon svg { width: 16px; height: 16px; }
+        .activity-icon.success svg { stroke: var(--success); fill: none; }
+        .activity-icon.error svg { stroke: var(--error); fill: none; }
+        .activity-icon.progress { color: var(--gold); }
+        .activity-text {
+            font-size: 13px;
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        /* Stats section */
+        .stats-section {
+            padding: 16px 20px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        .stats-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .stats-label {
+            font-size: 13px;
+            color: var(--muted);
+        }
+        .stats-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gold);
+        }
+        .stats-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        .btn-sm-outline {
+            padding: 8px 14px;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.12);
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: border-color 200ms, color 200ms, background 200ms;
+        }
+        .btn-sm-outline:hover {
+            border-color: rgba(255,255,255,0.25);
+            color: var(--white);
+        }
+        .btn-danger-outline {
+            padding: 8px 14px;
+            background: transparent;
+            border: 1px solid rgba(239,68,68,0.3);
+            color: rgba(239,68,68,0.7);
+            font-size: 12px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: border-color 200ms, color 200ms, background 200ms;
+        }
+        .btn-danger-outline:hover {
+            border-color: var(--error);
+            color: var(--error);
+            background: rgba(239,68,68,0.06);
+        }
+
+        /* ================================================================
+           CONFIRM MODAL
+        ================================================================ */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10001;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+        }
+        .modal-overlay.open { display: flex; }
+
+        .modal-card {
+            width: 400px;
+            max-width: 90vw;
+            padding: 28px 24px;
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid rgba(239,68,68,0.3);
+            border-radius: 20px;
+            box-shadow: 0 32px 64px rgba(0,0,0,0.5);
+        }
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--error);
+            margin-bottom: 12px;
+        }
+        .modal-body {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        .modal-input {
+            width: 100%;
+            padding: 10px 14px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 10px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            margin-bottom: 16px;
+            transition: border-color 200ms;
+        }
+        .modal-input:focus { border-color: rgba(239,68,68,0.4); }
+        .modal-input::placeholder { color: var(--muted); }
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        .modal-cancel {
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--white);
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            transition: background 200ms;
+        }
+        .modal-cancel:hover { background: rgba(255,255,255,0.1); }
+        .modal-confirm-danger {
+            padding: 10px 20px;
+            background: var(--error);
+            border: none;
+            color: white;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: filter 200ms, opacity 200ms;
+        }
+        .modal-confirm-danger:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .modal-confirm-danger:not(:disabled):hover { filter: brightness(1.15); }
+
+        /* ================================================================
+           TOAST
+        ================================================================ */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10002;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .toast {
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            animation: toastIn 300ms ease, toastOut 300ms ease 3700ms forwards;
+            max-width: 340px;
+        }
+        .toast.success {
+            background: rgba(34,197,94,0.15);
+            border: 1px solid rgba(34,197,94,0.3);
+            color: var(--success);
+        }
+        .toast.error {
+            background: rgba(239,68,68,0.15);
+            border: 1px solid rgba(239,68,68,0.3);
+            color: var(--error);
+        }
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(40px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes toastOut {
+            from { opacity: 1; transform: translateX(0); }
+            to   { opacity: 0; transform: translateX(40px); }
+        }
+
+        /* Upload spinner */
+        .spinner {
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(196,151,58,0.2);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ============================================================
+         PASSWORD GATE
+    ============================================================ -->
+    <div class="gate-overlay" id="gate">
+        <div class="gate-card" id="gate-card">
+            <div class="gate-logo">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M12 2L2 14h4v8h12v-8h4L12 2z" fill="white" opacity="0.9"/></svg>
+            </div>
+            <h2 class="gate-title">Admin Access</h2>
+            <input type="password" class="gate-input" id="gate-password" placeholder="Enter password" autocomplete="off" />
+            <div class="gate-error" id="gate-error"></div>
+            <button class="gate-btn" id="gate-submit">Enter</button>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         DASHBOARD
+    ============================================================ -->
+    <div class="dashboard" id="dashboard">
+        <!-- Header -->
+        <header class="dash-header">
+            <div class="dash-header-left">
+                <div class="dash-header-logo">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M12 2L2 14h4v8h12v-8h4L12 2z" fill="white" opacity="0.9"/></svg>
+                </div>
+                <span class="dash-header-title">Knowledge Base Admin</span>
+            </div>
+            <div class="dash-header-right">
+                <div class="stats-pill loading" id="header-stats-pill"></div>
+                <button class="sign-out-link" id="sign-out">Sign Out</button>
+            </div>
+        </header>
+
+        <!-- Main grid -->
+        <main class="dash-main">
+            <!-- Left: Upload -->
+            <div class="upload-card">
+                <div class="drop-zone" id="drop-zone">
+                    <div class="drop-zone-icon">
+                        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M24 32V16"/>
+                            <path d="M16 22l8-8 8 8"/>
+                            <path d="M8 36c-2.2 0-4-1.8-4-4 0-2 1.5-3.7 3.4-3.9C7.8 23.4 12 20 16.8 20c.6 0 1.2.1 1.8.2C20.5 16.5 24 14 28 14c5 0 9.2 3.7 9.9 8.5C40.8 23.2 44 26.2 44 30c0 3.3-2.7 6-6 6"/>
+                        </svg>
+                    </div>
+                    <h3 class="drop-zone-heading">Drop files here to add to the knowledge base</h3>
+                    <p class="drop-zone-sub">Supports PDF, Word (.docx), PowerPoint (.pptx), plain text (.txt), and Markdown (.md). Max 50MB per file.</p>
+                    <button class="browse-btn" id="browse-btn">Browse Files</button>
+                    <input type="file" id="file-input" multiple accept=".pdf,.docx,.pptx,.txt,.md" style="display:none" />
+                </div>
+
+                <div class="queue" id="queue"></div>
+                <button class="upload-all-btn" id="upload-all-btn" disabled>Upload All</button>
+            </div>
+
+            <!-- Right: Activity -->
+            <div class="activity-card">
+                <div class="activity-header">
+                    <div class="live-dot"></div>
+                    <h3>Activity</h3>
+                </div>
+                <div class="activity-feed" id="activity-feed">
+                    <div class="activity-empty" id="activity-empty">No uploads yet this session.<br/>Drop files on the left to get started.</div>
+                </div>
+                <div class="stats-section">
+                    <div class="stats-row">
+                        <span class="stats-label">Total vectors indexed</span>
+                        <span class="stats-value" id="stats-vectors">--</span>
+                    </div>
+                    <div class="stats-buttons">
+                        <button class="btn-sm-outline" id="refresh-stats-btn">Refresh Stats</button>
+                        <button class="btn-danger-outline" id="clear-index-btn">Clear Entire Index</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ============================================================
+         CLEAR INDEX MODAL
+    ============================================================ -->
+    <div class="modal-overlay" id="clear-modal">
+        <div class="modal-card">
+            <h3 class="modal-title">This cannot be undone</h3>
+            <p class="modal-body">You are about to delete all vectors from the Pinecone index. The AI chat will lose all knowledge until you re-upload documents.</p>
+            <input type="text" class="modal-input" id="clear-confirm-input" placeholder='Type DELETE to confirm' autocomplete="off" />
+            <div class="modal-actions">
+                <button class="modal-cancel" id="clear-cancel">Cancel</button>
+                <button class="modal-confirm-danger" id="clear-confirm" disabled>Clear Index</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- ============================================================
+         JAVASCRIPT
+    ============================================================ -->
+    <script>
+    (function() {
+        'use strict';
+
+        const API_BASE = 'https://silver-peak-gateway-production.up.railway.app';
+
+        // State
+        let adminPassword = '';
+        let fileQueue = []; // {id, file, status, chunks, errorMsg}
+        let activityLog = []; // {time, type, text}
+        let isUploading = false;
+
+        // DOM
+        const gate       = document.getElementById('gate');
+        const gateCard   = document.getElementById('gate-card');
+        const gatePw     = document.getElementById('gate-password');
+        const gateErr    = document.getElementById('gate-error');
+        const gateBtn    = document.getElementById('gate-submit');
+        const dashboard  = document.getElementById('dashboard');
+        const signOut    = document.getElementById('sign-out');
+        const headerPill = document.getElementById('header-stats-pill');
+        const dropZone   = document.getElementById('drop-zone');
+        const browseBtn  = document.getElementById('browse-btn');
+        const fileInput  = document.getElementById('file-input');
+        const queueEl    = document.getElementById('queue');
+        const uploadBtn  = document.getElementById('upload-all-btn');
+        const feedEl     = document.getElementById('activity-feed');
+        const emptyEl    = document.getElementById('activity-empty');
+        const statsVal   = document.getElementById('stats-vectors');
+        const refreshBtn = document.getElementById('refresh-stats-btn');
+        const clearBtn   = document.getElementById('clear-index-btn');
+        const clearModal = document.getElementById('clear-modal');
+        const clearInput = document.getElementById('clear-confirm-input');
+        const clearCancel= document.getElementById('clear-cancel');
+        const clearConfirm=document.getElementById('clear-confirm');
+        const toastBox   = document.getElementById('toast-container');
+
+        // ---- HELPERS ----
+
+        function formatTime() {
+            const d = new Date();
+            let h = d.getHours(), m = d.getMinutes();
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12 || 12;
+            return 'Today ' + h + ':' + (m < 10 ? '0' : '') + m + ' ' + ampm;
+        }
+
+        function formatSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / 1048576).toFixed(1) + ' MB';
+        }
+
+        function getExt(name) {
+            return name.split('.').pop().toLowerCase();
+        }
+
+        function toast(message, type) {
+            const el = document.createElement('div');
+            el.className = 'toast ' + type;
+            el.textContent = message;
+            toastBox.appendChild(el);
+            setTimeout(() => el.remove(), 4000);
+        }
+
+        let idCounter = 0;
+        function uid() { return 'f' + (++idCounter); }
+
+        const ALLOWED_EXT = ['pdf', 'docx', 'pptx', 'txt', 'md'];
+
+        // ---- PASSWORD GATE ----
+
+        const ADMIN_PASSWORD = 'silverpeak2025';
+
+        async function tryLogin() {
+            const pw = gatePw.value.trim();
+            if (!pw) return;
+
+            gateErr.textContent = '';
+
+            if (pw !== ADMIN_PASSWORD) {
+                gateCard.classList.add('shake');
+                gateErr.textContent = 'Incorrect password. Try again.';
+                setTimeout(() => gateCard.classList.remove('shake'), 400);
+                return;
+            }
+
+            adminPassword = pw;
+            gate.classList.add('hidden');
+            dashboard.classList.add('visible');
+            fetchStats();
+        }
+
+        gatePw.addEventListener('keydown', (e) => { if (e.key === 'Enter') tryLogin(); });
+        gateBtn.addEventListener('click', tryLogin);
+
+        // Sign out
+        signOut.addEventListener('click', () => {
+            adminPassword = '';
+            gatePw.value = '';
+            gateErr.textContent = '';
+            dashboard.classList.remove('visible');
+            gate.classList.remove('hidden');
+        });
+
+        // ---- STATS ----
+
+        function updateStatsPill(count) {
+            headerPill.classList.remove('loading');
+            headerPill.textContent = (count || 0).toLocaleString() + ' vectors indexed';
+        }
+
+        async function fetchStats() {
+            try {
+                headerPill.classList.add('loading');
+                headerPill.textContent = '';
+                const res = await fetch(API_BASE + '/admin/stats', {
+                    headers: { 'X-Admin-Password': adminPassword }
+                });
+                const data = await res.json();
+                updateStatsPill(data.vector_count);
+                statsVal.textContent = (data.vector_count || 0).toLocaleString();
+            } catch (e) {
+                headerPill.classList.remove('loading');
+                headerPill.textContent = 'Error loading stats';
+            }
+        }
+
+        refreshBtn.addEventListener('click', fetchStats);
+
+        // ---- FILE DROP & BROWSE ----
+
+        function addFiles(files) {
+            for (const f of files) {
+                const ext = getExt(f.name);
+                if (!ALLOWED_EXT.includes(ext)) {
+                    toast('Unsupported file type: .' + ext, 'error');
+                    continue;
+                }
+                if (f.size > 50 * 1048576) {
+                    toast(f.name + ' exceeds 50MB limit', 'error');
+                    continue;
+                }
+                fileQueue.push({ id: uid(), file: f, status: 'queued', chunks: 0, errorMsg: '' });
+            }
+            renderQueue();
+        }
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            addFiles(e.dataTransfer.files);
+        });
+        browseBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            fileInput.click();
+        });
+        dropZone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', () => {
+            addFiles(fileInput.files);
+            fileInput.value = '';
+        });
+
+        // ---- QUEUE RENDERING ----
+
+        function renderQueue() {
+            queueEl.innerHTML = '';
+
+            const hasQueued = fileQueue.some(f => f.status === 'queued');
+            uploadBtn.classList.toggle('visible', fileQueue.length > 0);
+            uploadBtn.disabled = !hasQueued || isUploading;
+
+            for (const item of fileQueue) {
+                const ext = getExt(item.file.name);
+
+                const row = document.createElement('div');
+                row.className = 'queue-item' + (item.status === 'indexed' ? ' success' : '') + (item.status === 'failed' ? ' error' : '');
+
+                // Icon
+                const icon = document.createElement('div');
+                icon.className = 'file-icon ' + ext;
+                icon.textContent = ext;
+
+                // Info
+                const info = document.createElement('div');
+                info.className = 'queue-info';
+                const name = document.createElement('div');
+                name.className = 'queue-name';
+                name.textContent = item.file.name;
+                const size = document.createElement('div');
+                size.className = 'queue-size';
+                size.textContent = formatSize(item.file.size);
+                info.appendChild(name);
+                info.appendChild(size);
+
+                // Status
+                const status = document.createElement('div');
+                status.className = 'queue-status ' + item.status;
+                if (item.status === 'queued') status.textContent = 'Queued';
+                else if (item.status === 'uploading') status.innerHTML = '<span class="spinner"></span> Uploading\u2026';
+                else if (item.status === 'indexed') status.textContent = 'Indexed \u2713 \u2014 ' + item.chunks + ' chunks added';
+                else if (item.status === 'failed') status.textContent = 'Failed \u2717';
+
+                row.appendChild(icon);
+                row.appendChild(info);
+                row.appendChild(status);
+
+                // Remove btn (only if queued)
+                if (item.status === 'queued') {
+                    const rm = document.createElement('button');
+                    rm.className = 'queue-remove';
+                    rm.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+                    rm.onclick = () => {
+                        fileQueue = fileQueue.filter(f => f.id !== item.id);
+                        renderQueue();
+                    };
+                    row.appendChild(rm);
+                }
+
+                queueEl.appendChild(row);
+            }
+        }
+
+        // ---- UPLOAD ALL ----
+
+        async function uploadAll() {
+            const toUpload = fileQueue.filter(f => f.status === 'queued');
+            if (toUpload.length === 0) return;
+
+            isUploading = true;
+            let completed = 0;
+            const total = toUpload.length;
+
+            uploadBtn.disabled = true;
+            uploadBtn.textContent = 'Uploading\u2026 (0 of ' + total + ')';
+
+            for (const item of toUpload) {
+                item.status = 'uploading';
+                renderQueue();
+
+                try {
+                    const form = new FormData();
+                    form.append('file', item.file);
+
+                    const controller = new AbortController();
+                    const timeout = setTimeout(() => controller.abort(), 120000);
+
+                    const res = await fetch(API_BASE + '/admin/upload', {
+                        method: 'POST',
+                        headers: { 'X-Admin-Password': adminPassword },
+                        body: form,
+                        signal: controller.signal
+                    });
+
+                    clearTimeout(timeout);
+
+                    let data;
+                    const contentType = res.headers.get('content-type') || '';
+                    if (contentType.includes('application/json')) {
+                        data = await res.json();
+                    } else {
+                        const text = await res.text();
+                        data = { message: text || ('Server returned HTTP ' + res.status) };
+                    }
+
+                    if (res.ok && data.status === 'success') {
+                        item.status = 'indexed';
+                        item.chunks = data.chunks_indexed || 0;
+                        addActivity('success', item.file.name + ' \u2014 ' + item.chunks + ' chunks indexed');
+                    } else {
+                        item.status = 'failed';
+                        item.errorMsg = data.message || data.detail || data.error || ('HTTP ' + res.status);
+                        addActivity('error', item.file.name + ' \u2014 Failed: ' + item.errorMsg);
+                    }
+                } catch (e) {
+                    item.status = 'failed';
+                    const errMsg = e.name === 'AbortError'
+                        ? 'Request timed out after 120s'
+                        : (e.message || 'Network error');
+                    item.errorMsg = errMsg;
+                    addActivity('error', item.file.name + ' \u2014 Failed: ' + errMsg);
+                }
+
+                completed++;
+                uploadBtn.textContent = 'Uploading\u2026 (' + completed + ' of ' + total + ')';
+                renderQueue();
+            }
+
+            isUploading = false;
+            const successCount = toUpload.filter(f => f.status === 'indexed').length;
+            const failCount = toUpload.filter(f => f.status === 'failed').length;
+
+            if (successCount > 0) toast('Upload complete \u2014 ' + successCount + ' file' + (successCount > 1 ? 's' : '') + ' indexed', 'success');
+            if (failCount > 0) toast(failCount + ' upload' + (failCount > 1 ? 's' : '') + ' failed', 'error');
+
+            uploadBtn.textContent = 'Upload All';
+            renderQueue();
+            fetchStats();
+        }
+
+        uploadBtn.addEventListener('click', uploadAll);
+
+        // ---- ACTIVITY LOG ----
+
+        function addActivity(type, text) {
+            emptyEl.style.display = 'none';
+            activityLog.unshift({ time: formatTime(), type: type, text: text });
+            renderActivity();
+        }
+
+        function renderActivity() {
+            // Remove existing items (keep empty placeholder hidden)
+            const existing = feedEl.querySelectorAll('.activity-item');
+            existing.forEach(el => el.remove());
+
+            for (const entry of activityLog) {
+                const row = document.createElement('div');
+                row.className = 'activity-item';
+
+                const time = document.createElement('div');
+                time.className = 'activity-time';
+                time.textContent = entry.time;
+
+                const icon = document.createElement('div');
+                icon.className = 'activity-icon ' + entry.type;
+                if (entry.type === 'success') {
+                    icon.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+                } else if (entry.type === 'error') {
+                    icon.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+                } else {
+                    icon.innerHTML = '<span class="spinner"></span>';
+                }
+
+                const txt = document.createElement('div');
+                txt.className = 'activity-text';
+                txt.textContent = entry.text;
+
+                row.appendChild(time);
+                row.appendChild(icon);
+                row.appendChild(txt);
+                feedEl.appendChild(row);
+            }
+        }
+
+        // ---- CLEAR INDEX MODAL ----
+
+        clearBtn.addEventListener('click', () => {
+            clearModal.classList.add('open');
+            clearInput.value = '';
+            clearConfirm.disabled = true;
+            clearInput.focus();
+        });
+        clearCancel.addEventListener('click', () => clearModal.classList.remove('open'));
+        clearModal.addEventListener('click', (e) => { if (e.target === clearModal) clearModal.classList.remove('open'); });
+
+        clearInput.addEventListener('input', () => {
+            clearConfirm.disabled = clearInput.value.trim() !== 'DELETE';
+        });
+
+        clearConfirm.addEventListener('click', async () => {
+            if (clearInput.value.trim() !== 'DELETE') return;
+
+            clearConfirm.disabled = true;
+            clearConfirm.textContent = 'Clearing\u2026';
+
+            try {
+                const res = await fetch(API_BASE + '/admin/clear', {
+                    method: 'DELETE',
+                    headers: { 'X-Admin-Password': adminPassword }
+                });
+
+                if (res.ok) {
+                    toast('Index cleared successfully', 'success');
+                    addActivity('success', 'Entire index cleared');
+                    fetchStats();
+                } else {
+                    toast('Failed to clear index', 'error');
+                }
+            } catch (e) {
+                toast('Network error clearing index', 'error');
+            }
+
+            clearConfirm.textContent = 'Clear Index';
+            clearModal.classList.remove('open');
+        });
+
+    })();
+    </script>
+</body>
+
+</html>
