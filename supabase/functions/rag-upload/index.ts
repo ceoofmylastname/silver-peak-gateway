@@ -36,12 +36,13 @@ async function parseWithLlamaParse(pdfBytes: Uint8Array, apiKey: string): Promis
   const { id: jobId } = await uploadResp.json();
 
   // Poll for completion
-  for (let i = 0; i < 60; i++) {
+  for (let i = 0; i < 120; i++) {
     await new Promise((r) => setTimeout(r, 2000));
     const statusResp = await fetch(`https://api.cloud.llamaindex.ai/api/parsing/job/${jobId}`, {
       headers: { Authorization: `Bearer ${apiKey}` },
     });
     const statusData = await statusResp.json();
+    console.log(`LlamaParse poll ${i}: ${statusData.status}`);
     if (statusData.status === "SUCCESS") {
       const resultResp = await fetch(
         `https://api.cloud.llamaindex.ai/api/parsing/job/${jobId}/result/text`,
