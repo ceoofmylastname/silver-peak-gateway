@@ -78,9 +78,9 @@ const Admin = () => {
   const statusIcon = (status: string) => {
     switch (status) {
       case "ready":
-        return <CheckCircle className="w-4 h-4 text-green-400" />;
+        return <CheckCircle className="w-4 h-4 text-accent" />;
       case "error":
-        return <AlertCircle className="w-4 h-4 text-red-400" />;
+        return <AlertCircle className="w-4 h-4 text-destructive" />;
       default:
         return <Loader2 className="w-4 h-4 text-primary animate-spin" />;
     }
