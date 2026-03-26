@@ -33,6 +33,7 @@ async function embedQuery(text: string, apiKey: string): Promise<number[]> {
       body: JSON.stringify({
         model: "models/gemini-embedding-001",
         content: { parts: [{ text }] },
+        outputDimensionality: 768,
       }),
     }
   );
